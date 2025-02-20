@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(), ShowFragment {
         show(fragment, true)
     }
 
+
     private fun show(fragment: Fragment, add: Boolean) {
         //todo
         val transaction = supportFragmentManager.beginTransaction()
