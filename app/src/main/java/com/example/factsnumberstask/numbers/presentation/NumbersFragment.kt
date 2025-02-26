@@ -13,35 +13,36 @@ import com.example.factsnumberstask.main.presentation.ShowFragment
 
 class NumbersFragment : Fragment() {
 
-    private var showFragment: ShowFragment = ShowFragment. Empty()
+    private var showFragment: ShowFragment = ShowFragment.Empty()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         showFragment = context as ShowFragment
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragmet_numbers, container,false)
+        return inflater.inflate(R.layout.fragmet_numbers, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<ProgressBar>(R.id.progressbar).visibility =View.GONE
-        view.findViewById<View>(R.id.getFact).setOnClickListener{
-        val detailsFragment = DetailsFragment.newInstance("some information for number")
-
+        view.findViewById<ProgressBar>(R.id.progressbar).visibility = View.GONE
+        view.findViewById<View>(R.id.getFact).setOnClickListener {
+            val detailsFragment = DetailsFragment.newInstance("some information for number")
+            //todo refactor
             //переход на след фрагмент
             showFragment.show(detailsFragment)
-            }
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
-            showFragment = ShowFragment.Empty()
+        showFragment = ShowFragment.Empty()
     }
 
 }

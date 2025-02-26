@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity(), ShowFragment {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null)
-            show(NumbersFragment(),false)
+            show(NumbersFragment(), false)
     }
 
     override fun show(fragment: Fragment) {
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), ShowFragment {
         val transaction = supportFragmentManager.beginTransaction()
         val conteiner = R.id.container
         if (add) {
-            transaction.addToBackStack(fragment.javaClass.simpleName)
+            transaction.add(conteiner, fragment).addToBackStack(fragment.javaClass.simpleName)
         } else {
             transaction.replace(conteiner, fragment)
         }

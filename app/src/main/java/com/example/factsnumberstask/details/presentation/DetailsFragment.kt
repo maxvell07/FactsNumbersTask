@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import com.example.factsnumberstask.R
 import com.example.factsnumberstask.numbers.presentation.NumbersFragment
 
-class DetailsFragment: Fragment() {
-
+class DetailsFragment : Fragment() {
 
 
     override fun onCreateView(
@@ -18,14 +17,14 @@ class DetailsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragmet_details,container,false)
+        return inflater.inflate(R.layout.fragmet_details, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val value:String = requireArguments().getString(KEY).toString()
+        val value: String = requireArguments().getString(KEY).toString()
 
-        view.findViewById<TextView>(R.id.textView).text =value
+        view.findViewById<TextView>(R.id.textView).text = value
     }
 
 
