@@ -1,5 +1,6 @@
 package com.example.factsnumberstask.numbers.domain
 
+import com.example.factsnumberstask.numbers.presentation.ManageResources
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before
@@ -8,110 +9,135 @@ import org.junit.Test
 class NumbersInteractorTest {
 
     private lateinit var interactor: NumbersInteractor
-    private lateinit var repository : TestNumbersRepository
+    private lateinit var repository: TestNumbersRepository
+    private lateinit var manageResources: TestManageResources
+
     @Before
-    fun setUp(){
+    fun setUp() {
+        manageResources = TestManageResources()
         repository = TestNumbersRepository()
-        interactor = NumbersInteractor.Base(repository)
-
+        interactor = NumbersInteractor.Base(
+            repository, HandleRequest.Base(HandleError.Base(manageResources), repository)
+        )
     }
+
     @Test
-    fun test_init_success() = runBlocking{
-        repository.changeExpectedListNumbers(listOf(NumberFact("3","fact about 3")))
+    fun test_init_success() = runBlocking {
+        repository.changeExpectedListNumbers(listOf(NumberFact("3", "fact about 3")))
         val actual = interactor.init()
-        val expected = NumbersResult.Success(listOf(NumberFact("3","fact about 3")))
+        val expected = NumbersResult.Success(listOf(NumberFact("3", "fact about 3")))
 
-        assertEquals(expected,actual)
-        assertEquals(1,repository.allNumbersCalledCount)
+        assertEquals(expected, actual)
+        assertEquals(1, repository.allNumbersCalledCount)
     }
 
     @Test
-    fun test_fact_about_number_success(): Unit = runBlocking{
-        repository.changeExpectedFactOfNumber(NumberFact("7","fact about 7"))
+    fun test_fact_about_number_success(): Unit = runBlocking {
+        repository.changeExpectedFactOfNumber(NumberFact("7", "fact about 7"))
 
         val actual = interactor.factAboutNumber("7")
-        val  expected = NumbersResult.Success(listOf(NumberFact("7","fact about 7")))
+        val expected = NumbersResult.Success(listOf(NumberFact("7", "fact about 7")))
 
-        assertEquals(expected,actual)
-        assertEquals("7",repository.numberFactCalledList[0])
-        assertEquals(1,repository.numberFactCalledList.size)
+        assertEquals(expected, actual)
+        assertEquals("7", repository.numberFactCalledList[0])
+        assertEquals(1, repository.numberFactCalledList.size)
     }
+
     @Test
     fun test_fact_about_number_error(): Unit = runBlocking {
         repository.expectingErrorGetFact(true)
+        manageResources.changeExpected("no internet connection")
         val actual = interactor.factAboutNumber("7")
         val expected = NumbersResult.Failure("no internet connection")
-        assertEquals(expected,actual)
-        assertEquals("7",repository.numberFactCalledList[0])
-        assertEquals(1,repository.numberFactCalledList.size)
+        assertEquals(expected, actual)
+        assertEquals("7", repository.numberFactCalledList[0])
+        assertEquals(1, repository.numberFactCalledList.size)
     }
 
     @Test
-    fun test_fact_about_random_number_success(): Unit = runBlocking{
-        repository.changeExpectedFactOfRandomNumber(NumberFact("7","fact about 7"))
+    fun test_fact_about_random_number_success(): Unit = runBlocking {
+        repository.changeExpectedFactOfRandomNumber(NumberFact("7", "fact about 7"))
 
         val actual = interactor.factAboutRandomNumber()
-        val  expected = NumbersResult.Success(listOf(NumberFact("7","fact about 7")))
+        val expected = NumbersResult.Success(listOf(NumberFact("7", "fact about 7")))
 
-        assertEquals(expected,actual)
-        assertEquals(1,repository.randomNumberFactCalledList.size)
+        assertEquals(expected, actual)
+        assertEquals(1, repository.randomNumberFactCalledList.size)
     }
 
     @Test
     fun test_fact_about_random_number_error(): Unit = runBlocking {
         repository.expectingErrorGetRandomFact(true)
+        manageResources.changeExpected("no internet connection")
         val actual = interactor.factAboutRandomNumber()
         val expected = NumbersResult.Failure("no internet connection")
 
-        assertEquals(expected,actual)
-        assertEquals(1,repository.numberFactCalledList.size)
+        assertEquals(expected, actual)
+        assertEquals(1, repository.randomNumberFactCalledList.size)
     }
 
-    private class TestNumbersRepository: NumbersRepository{
+    private class TestNumbersRepository : NumbersRepository {
 
-        private val allNumbers =mutableListOf<NumberFact>()
+        private val allNumbers = mutableListOf<NumberFact>()
 
-        private var numberFact = NumberFact("","")
-        var allNumbersCalledCount =0
+        private var numberFact = NumberFact("", "")
+        var allNumbersCalledCount = 0
         val numberFactCalledList = mutableListOf<String>()
         val randomNumberFactCalledList = mutableListOf<String>()
         private var errorWhileNumberFact = false
-        fun changeExpectedListNumbers(list: List<NumberFact>){
+        fun changeExpectedListNumbers(list: List<NumberFact>) {
             allNumbers.clear()
             allNumbers.addAll(list)
         }
 
-        fun changeExpectedFactOfNumber(numberFact: NumberFact){
+        fun changeExpectedFactOfNumber(numberFact: NumberFact) {
             this.numberFact = numberFact
         }
-        fun changeExpectedFactOfRandomNumber(numberFact: NumberFact){
+
+        fun changeExpectedFactOfRandomNumber(numberFact: NumberFact) {
             this.numberFact = numberFact
         }
-        fun expectingErrorGetFact(error: Boolean){
+
+        fun expectingErrorGetFact(error: Boolean) {
             errorWhileNumberFact = error
         }
-        fun expectingErrorGetRandomFact(error: Boolean){
+
+        fun expectingErrorGetRandomFact(error: Boolean) {
             errorWhileNumberFact = error
         }
-        override fun allNumbers(): List<NumberFact>{
+
+        override suspend fun allNumbers(): List<NumberFact> {
             allNumbersCalledCount++
             return allNumbers
         }
-        override fun numberFact(number: String): NumberFact{
+
+        override suspend fun numberFact(number: String): NumberFact {
             numberFactCalledList.add(number)
             if (errorWhileNumberFact)
                 throw NoInternetConnectionExeption()
+            allNumbers.add(numberFact)
             return numberFact
         }
-        override fun randomNumberFact(): NumberFact{
+
+        override suspend fun randomNumberFact(): NumberFact {
             randomNumberFactCalledList.add("")
             if (errorWhileNumberFact)
                 throw NoInternetConnectionExeption()
+            allNumbers.add(numberFact)
             return numberFact
-
         }
 
 
     }
 
+    private class TestManageResources : ManageResources {
+
+        private var value = ""
+
+        fun changeExpected(string: String) {
+            value = string
+        }
+
+        override fun string(id: Int): String = value
+    }
 }
