@@ -1,6 +1,7 @@
-package com.example.factsnumberstask.numbers.data
+package com.example.factsnumberstask.numbers.data.cloud
 
-import com.example.factsnumberstask.numbers.domain.NumberFact
+import com.example.factsnumberstask.numbers.data.cache.FetchNumber
+import com.example.factsnumberstask.numbers.data.NumberData
 
 
 interface NumbersCloudDataSource : FetchNumber {

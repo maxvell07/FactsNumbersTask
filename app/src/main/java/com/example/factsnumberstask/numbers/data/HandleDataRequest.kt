@@ -1,8 +1,8 @@
-package com.example.factsnumberstask.numbers.domain
+package com.example.factsnumberstask.numbers.data
 
-import com.example.factsnumberstask.numbers.data.NumberData
-import com.example.factsnumberstask.numbers.data.NumbersCacheDataSource
-
+import com.example.factsnumberstask.numbers.data.cache.NumbersCacheDataSource
+import com.example.factsnumberstask.numbers.domain.HandleError
+import com.example.factsnumberstask.numbers.domain.NumberFact
 
 interface HandleDataRequest {
 
