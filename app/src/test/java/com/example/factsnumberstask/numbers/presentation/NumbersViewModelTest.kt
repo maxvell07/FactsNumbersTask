@@ -1,3 +1,5 @@
+import android.view.View
+import androidx.transition.Visibility
 import com.example.factsnumberstask.numbers.domain.NumberFact
 import com.example.factsnumberstask.numbers.domain.NumberUiMapper
 import com.example.factsnumberstask.numbers.domain.NumbersInteractor
@@ -58,11 +60,11 @@ class NumbersViewModelTest : BaseTest() {
 
         viewModel.init(isFirstRun = true)
 
-        assertEquals(true, communications.progressCalledList[0])
+        assertEquals(View.VISIBLE, communications.progressCalledList[0])
         assertEquals(1, interactor.initCalledList.size)
 
         assertEquals(2, communications.progressCalledList.size)
-        assertEquals(false, communications.progressCalledList[1])
+        assertEquals(View.GONE, communications.progressCalledList[1])
 
         assertEquals(1, communications.stateCalledList.size)
         assertEquals(true, communications.stateCalledList[0] is UiState.Success)
@@ -74,12 +76,12 @@ class NumbersViewModelTest : BaseTest() {
         interactor.changeExpectedResult(NumbersResult.Failure("no internet connection"))
         viewModel.fetchRandomNumberFact()
 
-        assertEquals(true, communications.progressCalledList[2])
+        assertEquals(View.VISIBLE, communications.progressCalledList[2])
 
         assertEquals(1, interactor.fetchAboutRandomNumberCalledList.size)
 
         assertEquals(4, communications.progressCalledList.size)
-        assertEquals(false, communications.progressCalledList[3])
+        assertEquals(View.GONE, communications.progressCalledList[3])
 
         assertEquals(2, communications.stateCalledList.size)
         assertEquals(UiState.Error("no internet connection"), communications.stateCalledList[1])
@@ -126,7 +128,7 @@ class NumbersViewModelTest : BaseTest() {
 
 
 
-        assertEquals(true, communications.progressCalledList[0])
+        assertEquals(View.VISIBLE, communications.progressCalledList[0])
 
         assertEquals(1, interactor.fetchAboutNumberCalledList.size)
         assertEquals(
@@ -135,7 +137,7 @@ class NumbersViewModelTest : BaseTest() {
         )
 
         assertEquals(2, communications.progressCalledList.size)
-        assertEquals(false, communications.progressCalledList[1])
+        assertEquals(View.GONE, communications.progressCalledList[1])
 
         assertEquals(1, communications.stateCalledList.size)
         assertEquals(true, communications.stateCalledList[0] is UiState.Success)
@@ -143,7 +145,13 @@ class NumbersViewModelTest : BaseTest() {
         assertEquals(1, communications.timesShowList)
         assertEquals(NumberUi("45", "fact about 45"), communications.numbersList[0])
     }
+    @Test
+    fun `test clear error`() {
+        viewModel.clearError()
 
+        assertEquals(1, communications.stateCalledList.size)
+        assertEquals(true, communications.stateCalledList[0] is UiState.ClearError)
+    }
     private class TestManageResources : ManageResources {
 
         private var string: String = ""
