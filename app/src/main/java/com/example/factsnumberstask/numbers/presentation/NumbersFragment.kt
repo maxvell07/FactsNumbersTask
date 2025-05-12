@@ -53,11 +53,10 @@ class NumbersFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         val inputEditText = view.findViewById<TextInputEditText>(R.id.edittext)
         val inputLayout = view.findViewById<TextInputLayout>(R.id.textInputLayout)
+        val mapper = DetailsUi()
         val adapter = NumbersAdapter(object : ClickListener {
             override fun click(item: NumberUi) {
-                //        val detailsFragment = DetailsFragment.newInstance("some information for number")
-                //      showFragment.show(detailsFragment)
-                //todo move to next screen(fragment)
+                showFragment.show(DetailsFragment.newInstance(item.map(mapper)))
 
             }
         })
