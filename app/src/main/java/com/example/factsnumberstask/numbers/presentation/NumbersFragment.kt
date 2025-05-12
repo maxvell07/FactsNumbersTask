@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.factsnumberstask.R
 import com.example.factsnumberstask.details.presentation.DetailsFragment
 import com.example.factsnumberstask.main.presentation.ShowFragment
+import com.example.factsnumberstask.main.sl.ProvideViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -28,13 +29,20 @@ class NumbersFragment : Fragment() {
 
         showFragment = context as ShowFragment
     }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return inflater.inflate(R.layout.fragmet_numbers, container, false)
+    }
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = (requireActivity() as ProvideViewModel).provideViewModel(
+            NumbersViewModel::class.java, this
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

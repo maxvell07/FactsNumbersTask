@@ -36,9 +36,10 @@ class NumberViewHolder(view:View,private val clickListener: ClickListener): Recy
 
     private val title = itemView.findViewById<TextView>(R.id.titleTextView)
     private val subTitle = itemView.findViewById<TextView>(R.id.subTitleTextView)
+    private val mapper = ListItemUi(title, subTitle)
 
     fun bind(model: NumberUi){
-        model.map(title,subTitle)
+        model.map(mapper)
         itemView.setOnClickListener {
             clickListener.click(model)
         }
