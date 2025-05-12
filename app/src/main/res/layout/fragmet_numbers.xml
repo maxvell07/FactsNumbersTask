@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="gone"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textInputLayout"
+        android:hint="input a number"
+        android:layout_margin="@dimen/margin_small"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittext"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_margin="@dimen/margin_small"
+        android:text="GET FACT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/getFact"/>
+
+    <Button
+        android:layout_margin="@dimen/margin_small"
+        android:text="GET RANDOM FACT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/getRandomFact"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerView"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</LinearLayout>

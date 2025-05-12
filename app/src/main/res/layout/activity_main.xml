@@ -1,53 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-<ProgressBar
-    android:id="@+id/progressbar"
-    android:visibility="visible"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:visibility="gone"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="input a number"
-        android:layout_margin="@dimen/margin_small"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edittext"
-            android:inputType="number"
-            android:maxLength="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:layout_margin="@dimen/margin_small"
-        android:text="GET FACT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/getFact"/>
-    
-    <Button
-        android:layout_margin="@dimen/margin_small"
-        android:text="GET RANDOM FACT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/getRandomFact"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
-</LinearLayout>
+    android:layout_height="match_parent" />
